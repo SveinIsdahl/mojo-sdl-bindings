@@ -51,16 +51,16 @@ struct SDL_Texture:
 @register_passable('trivial')
 struct SDL_Surface:
     var flags: UInt32
-    var format: UnsafePointer[SDL_PixelFormat, MutOrigin.external]
+    var format: UnsafePointer[SDL_PixelFormat, MutExternalOrigin]
     var w: Int32
     var h: Int32
     var pitch: Int32
-    var pixels: UnsafePointer[UInt32, MutOrigin.external]
-    var userdata: UnsafePointer[Int8, MutOrigin.external]
+    var pixels: UnsafePointer[UInt32, MutExternalOrigin]
+    var userdata: UnsafePointer[Int8, MutExternalOrigin]
     var locked: Int32
-    var list_blitmap: UnsafePointer[Int8, MutOrigin.external]
+    var list_blitmap: UnsafePointer[Int8, MutExternalOrigin]
     var clip_rect: SDL_Rect
-    var map: UnsafePointer[Int8, ImmutOrigin.external]
+    var map: UnsafePointer[Int8, ImmutExternalOrigin]
     var refcount: Int32
 
 
@@ -182,10 +182,10 @@ comptime c_SDL_Init = fn(w: Int32) -> Int32
 comptime c_SDL_Quit = fn() -> None
 
 # SDL_video.h
-comptime c_SDL_CreateWindow = fn(UnsafePointer[Byte, origin=ImmutAnyOrigin], Int32, Int32, Int32, Int32, Int32) -> UnsafePointer[SDL_Window, origin=MutOrigin.external] 
-comptime c_SDL_DestroyWindow = fn(UnsafePointer[SDL_Window, origin=MutOrigin.external]) -> None 
+comptime c_SDL_CreateWindow = fn(UnsafePointer[Byte, origin=ImmutAnyOrigin], Int32, Int32, Int32, Int32, Int32) -> UnsafePointer[SDL_Window, origin=MutExternalOrigin] 
+comptime c_SDL_DestroyWindow = fn(UnsafePointer[SDL_Window, origin=MutExternalOrigin]) -> None 
 comptime c_SDL_UpdateWindowSurface = fn(s: UnsafePointer[Int8]) -> Int32
-comptime c_SDL_GetWindowSurface = fn(s: UnsafePointer[Int8]) -> UnsafePointer[SDL_Surface, origin=MutOrigin.external]
+comptime c_SDL_GetWindowSurface = fn(s: UnsafePointer[Int8]) -> UnsafePointer[SDL_Surface, origin=MutExternalOrigin]
 
 # SDL_pixels.h
 comptime c_SDL_MapRGB = fn(Int32, Int32, Int32, Int32) -> UInt32
@@ -194,32 +194,32 @@ comptime c_SDL_MapRGB = fn(Int32, Int32, Int32, Int32) -> UInt32
 comptime c_SDL_Delay = fn(Int32) -> UInt32
 
 # SDL_event.h
-comptime c_SDL_PollEvent = fn(UnsafePointer[Event, origin=MutOrigin.external]) -> Int32
+comptime c_SDL_PollEvent = fn(UnsafePointer[Event, origin=MutExternalOrigin]) -> Int32
 
 # SDL_render.h
-comptime c_SDL_CreateRenderer = fn(UnsafePointer[SDL_Window, origin=MutOrigin.external], Int32, UInt32) -> UnsafePointer[SDL_Renderer, origin=MutOrigin.external]
-comptime c_SDL_CreateWindowAndRenderer = fn(Int32, Int32, UInt32, UnsafePointer[UnsafePointer[Int8, origin=MutOrigin.external]], UnsafePointer[UnsafePointer[SDL_Renderer, origin=MutOrigin.external]]) -> Int32
-comptime c_SDL_RenderDrawPoint = fn(UnsafePointer[SDL_Renderer, origin=MutOrigin.external], Int32, Int32) -> Int32
-comptime c_SDL_RenderDrawRect = fn(r: UnsafePointer[SDL_Renderer, origin=MutOrigin.external], rect: UnsafePointer[SDL_Rect]) -> Int32
-comptime c_SDL_RenderDrawLine = fn(UnsafePointer[SDL_Renderer, origin=MutOrigin.external], Int32, Int32, Int32, Int32) -> Int32
-comptime c_SDL_RenderPresent = fn(s: UnsafePointer[SDL_Renderer, origin=MutOrigin.external]) -> Int32
-comptime c_SDL_RenderClear = fn(s: UnsafePointer[SDL_Renderer, origin=MutOrigin.external]) -> Int32
-comptime c_SDL_SetRenderDrawColor = fn(UnsafePointer[SDL_Renderer, origin=MutOrigin.external], UInt8, UInt8, UInt8, UInt8) -> Int32
+comptime c_SDL_CreateRenderer = fn(UnsafePointer[SDL_Window, origin=MutExternalOrigin], Int32, UInt32) -> UnsafePointer[SDL_Renderer, origin=MutExternalOrigin]
+comptime c_SDL_CreateWindowAndRenderer = fn(Int32, Int32, UInt32, UnsafePointer[UnsafePointer[Int8, origin=MutExternalOrigin]], UnsafePointer[UnsafePointer[SDL_Renderer, origin=MutExternalOrigin]]) -> Int32
+comptime c_SDL_RenderDrawPoint = fn(UnsafePointer[SDL_Renderer, origin=MutExternalOrigin], Int32, Int32) -> Int32
+comptime c_SDL_RenderDrawRect = fn(r: UnsafePointer[SDL_Renderer, origin=MutExternalOrigin], rect: UnsafePointer[SDL_Rect]) -> Int32
+comptime c_SDL_RenderDrawLine = fn(UnsafePointer[SDL_Renderer, origin=MutExternalOrigin], Int32, Int32, Int32, Int32) -> Int32
+comptime c_SDL_RenderPresent = fn(s: UnsafePointer[SDL_Renderer, origin=MutExternalOrigin]) -> Int32
+comptime c_SDL_RenderClear = fn(s: UnsafePointer[SDL_Renderer, origin=MutExternalOrigin]) -> Int32
+comptime c_SDL_SetRenderDrawColor = fn(UnsafePointer[SDL_Renderer, origin=MutExternalOrigin], UInt8, UInt8, UInt8, UInt8) -> Int32
 comptime SDL_BlendMode = Int
-comptime c_SDL_SetRenderDrawBlendMode = fn(UnsafePointer[SDL_Renderer, origin=MutOrigin.external], SDL_BlendMode) -> Int32
-comptime c_SDL_SetRenderTarget = fn(r: UnsafePointer[SDL_Renderer, origin=MutOrigin.external], t: Int64) -> Int32
+comptime c_SDL_SetRenderDrawBlendMode = fn(UnsafePointer[SDL_Renderer, origin=MutExternalOrigin], SDL_BlendMode) -> Int32
+comptime c_SDL_SetRenderTarget = fn(r: UnsafePointer[SDL_Renderer, origin=MutExternalOrigin], t: Int64) -> Int32
 
-comptime c_SDL_RenderCopy = fn(r: UnsafePointer[SDL_Renderer, origin=MutOrigin.external],
+comptime c_SDL_RenderCopy = fn(r: UnsafePointer[SDL_Renderer, origin=MutExternalOrigin],
                             t: Int64,  #t: UnsafePointer[SDL_Texture],
                             s: Int64, d: Int64) -> Int32
                             #s: UnsafePointer[SDL_Rect], d: UnsafePointer[SDL_Rect]) -> Int32
 
 # SDL_surface.h
-comptime c_SDL_FillRect = fn(UnsafePointer[SDL_Surface, origin=MutOrigin.external], Int64, UInt32) -> Int32
+comptime c_SDL_FillRect = fn(UnsafePointer[SDL_Surface, origin=MutExternalOrigin], Int64, UInt32) -> Int32
 
 
 # texture
-comptime c_SDL_CreateTexture = fn(UnsafePointer[SDL_Renderer, origin=MutOrigin.external],
+comptime c_SDL_CreateTexture = fn(UnsafePointer[SDL_Renderer, origin=MutExternalOrigin],
                                UInt32, Int32,
                                Int32, Int32) -> Int64 #UnsafePointer[SDL_Texture]
 
